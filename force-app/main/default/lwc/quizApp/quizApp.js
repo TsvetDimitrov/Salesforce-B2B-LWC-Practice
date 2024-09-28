@@ -53,7 +53,9 @@ export default class QuizApp extends LightningElement {
 
     }
 
-    changeHandler (e) {
-        
+    resetHandler () {
+        this.selected = {};
+        this.correctAnswers = 0;
+        this.isSubmitted = false;
     }
 }
