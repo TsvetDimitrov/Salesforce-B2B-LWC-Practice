@@ -21,14 +21,14 @@
                         </div>
                     </div>
                 </template>
+                <lightning-button variant="brand" type="submit" label="Submit" title="Submit Quiz"
+                    onclick={submitHandler} disabled={allNotSelected} class="slds-m-around_small"></lightning-button>
+                <lightning-button variant="brand" type="reset" label="Reset" title="Reset Quiz" onclick={resetHandler}
+                    class="slds-m-around_small"></lightning-button>
             </form>
-            <lightning-button variant="brand" type="submit" label="Submit" title="Submit Quiz"
-                onclick={submitHandler}
-                disabled={allNotSelected}
-                class="slds-m-around_small"></lightning-button>
-            <lightning-button variant="brand" type="reset" label="Reset" title="Reset Quiz"
-                onclick={resetHandler}
-                class="slds-m-around_small"></lightning-button>
+            <template if:true={isSubmitted}>
+                <div class={isScoredFull}>You have scored {correctAnswers} of {myQuestions.length}</div>
+            </template>
         </div>
     </lightning-card>
 </template>
