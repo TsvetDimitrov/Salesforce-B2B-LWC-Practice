@@ -3,10 +3,41 @@
         <lightning-card title="Memory Game">
             <div class="slds-var-p-around_medium">
                 <section class="score-panel">
-                    score area
+                    <span class="moves">{moves}</span> Move(s)
+                    <div class="timer">{totalTime}</div>
+                    <div class="restart" onclick={shuffle}>
+                        <i class="fa fa-repeat" aria-hidden="true"></i>
+                    </div>
                 </section>
                 <section class="game-panel">
-                    game area
+                    <ul class="deck card-deck grid-container">
+                        <template for:each={cards} for:item="card">
+                            <li class={card.listClass} type={card.type} key={card.id} onclick={displayCard}>
+                                <i class={card.icon}></i>
+                            </li>
+                        </template>
+                    </ul>
+                    <template if:true={showCongratulations}>
+                        <section role="dialog" tabindex="-1" aria-modal="true"
+                            aria-label="Meaningful description of the modal content"
+                            class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless"
+                                    id="modal-content-id-1">
+                                    <p> You made <strong>{moves}</strong> moves in total time of {totalTime}</p>
+                                    <p>Your rating:
+                                        <template for:each={gameRating} for:item="rating">
+                                            <i class="fa fa-star" key={rating}></i>
+                                        </template>
+                                    </p>
+                                </div>
+                                <div class="slds-modal__footer">
+                                    <button class="slds-button slds-button_brand" onclick={shuffle}>Play Again</button>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                    </template>
                 </section>
             </div>
         </lightning-card>
