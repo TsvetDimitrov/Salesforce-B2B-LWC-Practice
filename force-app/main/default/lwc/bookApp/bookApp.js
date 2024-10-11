@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 // Include googleapis and google domains in the allowed domains to avoid CSP errors 
-const BOOK_URL = 'https://www.googleapis.com/books/v1/volumes?q=' 
+const BOOK_URL = 'https://www.googleapis.com/books/v1/volumes?q='
 
 export default class BookApp extends LightningElement {
     query = 'Man'; // initial query
@@ -16,10 +16,11 @@ export default class BookApp extends LightningElement {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                this.books = data
+                this.books = data ? this.formatData(data) :[]
             })
             .catch(error => console.error(error));
     }
+
 
     fetchBooksHandler(event) {
         this.query = event.target.value;
