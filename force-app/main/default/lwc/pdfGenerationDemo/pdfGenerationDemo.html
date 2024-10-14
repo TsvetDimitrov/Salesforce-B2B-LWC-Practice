@@ -1,0 +1,40 @@
+<template>
+    <div class="container slds-p-around_medium" style="background: white;">
+        <div class="slds-m-bottom_large">
+            <img src={imageUrl} style="height: 40px; width: 120px" />
+            <div style="display: inline-block; float: right; text-align: right;">
+                <div>Invoice #: {invoiceData.invoiceNo}</div>
+                <div>Created#: {invoiceData.invoiceCreated}</div>
+                <div>Due #: {invoiceData.invoiceDue}</div>
+            </div>
+        </div>
+        <div style="margin-top: 32px;">
+            <div style="display: inline-block;">
+                <div>{invoiceData.companyName}</div>
+                <div>{invoiceData.address1}</div>
+                <div>{invoiceData.address2}</div>
+            </div>
+            <div style="display: inline-block; float: right; text-align: right;">
+                <div>{clientData.client}</div>
+                <div>{clientData.username}</div>
+                <div>{clientData.email}</div>
+            </div>
+        </div>
+
+        <div class="slds-m-vertical_medium slds-p-around_small" style="background-color: #eeeeee">
+            <div style="display: inline-block;"><strong>Services</strong></div>
+            <div style="display: inline-block; float: right;"><strong>Amount</strong></div>
+        </div>
+
+        <template iterator:service={services}>
+            <div key={service.value.name}>
+                <div style="display: inline-block;">{service.value.name}</div>
+                <div style="display: inline-block; float: right;">${service.value.amount}</div>
+            </div>
+            <div if:true={service.last} key={service.value.name} style="display: inline-block; float: right;">
+                <strong>Total Amount: ${totalAmount}</strong>
+            </div>
+        </template>
+    </div>
+    <lightning-button variant="brand" label="Render PDF" onclick={pdfHandler}></lightning-button>
+</template>
