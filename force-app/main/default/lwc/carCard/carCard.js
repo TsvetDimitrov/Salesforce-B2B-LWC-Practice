@@ -1,6 +1,11 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
+
+//Navigation mixin import
+import { NavigationMixin } from 'lightning/navigation';
+
 
 // Car__c Schema
+import CAR_OBJECT from '@salesforce/schema/Car__c'
 import NAME_FIELD from '@salesforce/schema/Car__c.Name';
 import PICTURE_URL_FIELD from '@salesforce/schema/Car__c.Picture_URL__c';
 import CATEGORY_FIELD from '@salesforce/schema/Car__c.Category__c';
@@ -14,7 +19,14 @@ import CONTROL_FIELD from '@salesforce/schema/Car__c.Control__c';
 // This function is used to extract field values.
 import { getFieldValue } from 'lightning/uiRecordApi';
 
-export default class CarCard extends LightningElement {
+import { subscribe, MessageContext, unsubscribe } from 'lightning/messageService';
+import CAR_SELECTED_MESSAGE from '@salesforce/messageChannel/CarSelected__c';
+
+export default class CarCard extends NavigationMixin(LightningElement) {
+    // load context for LMS:
+    @wire(MessageContext)
+    messageContext
+
     // exposing fields to make them available in the template
     categoryField = CATEGORY_FIELD;
     makeField = MAKE_FIELD;
@@ -23,15 +35,45 @@ export default class CarCard extends LightningElement {
     seatsField = SEAT_FIELD;
     controlField = CONTROL_FIELD;
 
-    recordId = 'a00Qy00000O3cxNIAR'
+    recordId
 
     // car fields displayed with specific format
     carName
     carPictureUrl
+    carSubscriptionReference
+
     handleRecordLoaded(e) {
         const { records } = e.detail;
         const recordData = records[this.recordId];
         this.carName = getFieldValue(recordData, NAME_FIELD);
         this.carPictureUrl = getFieldValue(recordData, PICTURE_URL_FIELD);
+    }
+
+    connectedCallback() {
+        this.subscribeHandler();
+    }
+
+    subscribeHandler() {
+        this.carSubscriptionReference = subscribe(this.messageContext, CAR_SELECTED_MESSAGE, (message) => this.handleCarSelected(message))
+    }
+
+    handleCarSelected(message) {
+        this.recordId = message.carId;
+    }
+
+    disconnectedCallback() {
+        unsubscribe(this.carSubscriptionReference);
+        this.carSubscriptionReference = null;
+    }
+
+    handleNavigateToRecord(e) {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: this.recordId,
+                objectApiName: CAR_OBJECT.objectApiName,
+                actionName: 'view'
+            },
+        });
     }
 }
