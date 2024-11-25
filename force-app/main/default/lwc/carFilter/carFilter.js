@@ -41,14 +41,13 @@ export default class CarFilter extends LightningElement {
 
 
     handleSearchKeyChange(e) {
-        this.filters = { ... this.filters, "searchKey": e.target.value }
+        this.filters = { ... this.filters, "searchKey": e.target.value };
         this.sendDataToCarList();
     }
 
     handleMaxPriceChange(e) {
-        this.filters = { ... this.filters, "maxPrice": e.target.value }
+        this.filters = { ... this.filters, "maxPrice": e.target.value };
         this.sendDataToCarList();
-
     }
 
     handleCheckbox(e) {
@@ -64,7 +63,7 @@ export default class CarFilter extends LightningElement {
                 this.filters[name] = [...this.filters[name], value];
             }
         } else {
-            this.filters[name] = this.filters[name].filter(item => item !== value)
+            this.filters[name] = this.filters[name].filter(item => item !== value);
         }
         this.sendDataToCarList();
     }

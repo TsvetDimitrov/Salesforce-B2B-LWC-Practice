@@ -36,13 +36,11 @@ export default class CarTileList extends LightningElement {
     }
 
     handleFilterChanges(message) {
-        console.log(message.filters);
-        this.filters = { ...message.filters }
+        this.filters = { ...message.filters };
     }
 
     handleSelectedCar(e) {
-        console.log(e.detail);
-        publish(this.messageContext, CAR_SELECTED_MESSAGE, { carId: e.detail })
+        publish(this.messageContext, CAR_SELECTED_MESSAGE, { carId: e.detail });
     }
 
     disconnectedCallback() {

@@ -27,7 +27,6 @@ export default class CarCard extends NavigationMixin(LightningElement) {
     @wire(MessageContext)
     messageContext
 
-    // exposing fields to make them available in the template
     categoryField = CATEGORY_FIELD;
     makeField = MAKE_FIELD;
     msrpField = MSRP_FIELD;
